@@ -7,7 +7,7 @@ var myMap = L.map('quakeMap').setView([37.09, -95.71], 2); // this is for London
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     maxZoom: 18,
-    id: 'mapbox.outdoors',
+    id: 'mapbox.dark',
     accessToken: 'pk.eyJ1IjoiYXJzMDEwNyIsImEiOiJjamFzbXoxeXY0dXdvMndwbDR1dWdnaGd5In0.T8N_gfaR8byS5LWCr5K3jQ'
 }).addTo(myMap);
 
@@ -25,7 +25,6 @@ function getColor(d) {
                     '#FFEDA0';        
 }
 
-
 // pulling the geojson data 
 d3.json(url, function(data) {
     L.geoJson(data, {
@@ -40,9 +39,9 @@ d3.json(url, function(data) {
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 0.8
-            });
+            }).bindPopup("<h3>Quake Info</h3>" + "<p>Location: " + feature.properties.place + "</p><p>Magnitude: " + feature.properties.mag + "</p>");
             // adding a popup when the user clicks a circle
-            circleMarker.bindPopup(feature.properties.mag).openPopup();
+            
         }
     // adding the layer to the map
     }).addTo(myMap);
@@ -61,7 +60,7 @@ legend.onAdd = function(map) {
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor(grades[i]) + '; color:' + magColor(grades[i] + 1) +  ';">....</i>&nbsp;&nbsp; ' +
+            '<i style="background:' + getColor(grades[i]) + '; color:' + getColor(grades[i] + 1) +  ';">....</i>&nbsp;&nbsp; ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '++');
     }
 
