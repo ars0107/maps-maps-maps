@@ -27,5 +27,24 @@ body {
     height: 500px;
     margin: 100px;
     border-radius: 10px;
-    
+    text-align: center !important;
     }
+
+.legend {
+    color: rgb(27, 27, 27);
+    background-color: rgba(220, 220, 220, 0.664);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.legend h3 {
+    margin: 0 !important;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 1;
+}
