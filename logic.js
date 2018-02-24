@@ -51,19 +51,18 @@ d3.json(url, function(data) {
 var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function(map) {
-
+    // create a div for the element and assign the grades
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [1, 2, 3, 4, 5, 6],
-        labels = [];
+        grades = [1, 2, 3, 4, 5, 6];
+        // add a title to the Legend for clarity
         div.innerHTML = '<h3>Magnitude</h3>'
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor(grades[i]) + '; color:' + getColor(grades[i]) +  ';">....</i>&nbsp;&nbsp; ' +
+            '<i style="background:' + getColor(grades[i]) + '; color:' + getColor(grades[i]) +  ';">....</i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '++');
     }
-
     return div;
 };
 
