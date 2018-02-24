@@ -8,7 +8,7 @@ body {
     text-align: center;
     padding: 10px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-color: gainsboro;
+    background-color: rgb(43, 168, 226);
     border-bottom: 2px solid gray;
 }
 
@@ -27,6 +27,7 @@ body {
     height: 500px;
     margin: 100px auto;
     border-radius: 10px;
+    box-shadow: 3px 3px 50px 20px rgb(43, 168, 226);
     }
 
 .legend {
