@@ -25,9 +25,8 @@ body {
 #quakeMap {
     width: 960px;
     height: 500px;
-    margin: 100px;
+    margin: 100px auto;
     border-radius: 10px;
-    text-align: center !important;
     }
 
 .legend {
