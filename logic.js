@@ -14,26 +14,17 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 // query url
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
-
-// selecting a list of colors to assign to different magnitudes
-var colors = ["rgb(101, 188, 241)", "rgb(1, 82, 255)", "rgb(129, 64, 233)", "rgb(245, 8, 245)", "rgb(8, 245, 134)", "rgb(245, 182, 8)"]
-
 // putting the colors and magnitudes into a bin
-function magColor(magnitude) {
-    if (magnitude <= 1) {
-        return colors[0];
-    } else if (magnitude > 1 && magnitude < 2) {
-        return colors[1];
-    } else if (magnitude > 2 && magnitude < 3) {
-        return colors[2];
-    } else if (magnitude > 3 && magnitude < 4) {
-        return colors[3];
-    } else if (magnitude > 4 && magnitude < 5) {
-        return colors[4];
-    } else {
-        return colors[5];
-    }
-};
+function getColor(d) {
+    return d > 6  ? 'rgb(245, 182, 8)' :
+           d > 5  ? 'rgb(8, 245, 134)' :
+           d > 4  ? 'rgb(245, 8, 245)' :
+           d > 3  ? 'rgb(129, 64, 233)' :
+           d > 2  ? 'rgb(1, 82, 255)' :
+           d > 1  ? 'rgb(101, 188, 241)' :
+                    '#FFEDA0';        
+}
+
 
 // pulling the geojson data 
 d3.json(url, function(data) {
@@ -44,18 +35,37 @@ d3.json(url, function(data) {
             return L.circleMarker(latlng, {
                 // styling circle marker 
                 radius: feature.properties.mag * 2, /* this selects the size of the circle based on magnitude */
-                fillColor: magColor(feature.properties.mag), /* this selects a color based on magnitude */ 
+                fillColor: getColor(feature.properties.mag), /* this selects a color based on magnitude */ 
                 color: "white",
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 0.8
             });
             // adding a popup when the user clicks a circle
-            marker.bindPopup(feature.properties.mag).openPopup();
+            circleMarker.bindPopup(feature.properties.mag).openPopup();
         }
     // adding the layer to the map
     }).addTo(myMap);
 });
 
 // add legend
+var legend = L.control({position: 'bottomleft'});
 
+legend.onAdd = function(map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [1, 2, 3, 4, 5, 6],
+        labels = [];
+        div.innerHTML = '<h3>Magnitude</h3>'
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i]) + '; color:' + magColor(grades[i] + 1) +  ';">....</i>&nbsp;&nbsp; ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '++');
+    }
+
+    return div;
+};
+
+legend.addTo(myMap);
